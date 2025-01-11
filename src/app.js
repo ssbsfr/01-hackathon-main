@@ -1,35 +1,45 @@
 import './styles.css'
 
-// 1) Импортируем наш класс-наследник ContextMenu
+// Меню
 import { ContextMenu } from './menu'
 
-// 2) Импортируем наши модули
+// Старый модуль (3 секунды)
 import { ClicksModule } from './modules/clicks.module'
+
+// Новый модуль (N секунд, например 5)
+import { AnalyticsClicksModule } from './modules/analytics-clicks.module'
+
+// Другие модули
 import { ShapeModule } from './modules/shape.module'
 import { BackgroundModule } from './modules/background.module'
 import { MessageModule } from './modules/message.module'
 
-// 3) Создаём экземпляр контекстного меню
+// Создаём меню
 const menu = new ContextMenu('#menu')
 
-// 4) Создаём модули
-const clicksModule = new ClicksModule('clicks', 'Считать клики (за 3 секунды)')
+// Создаём экземпляр старого модуля (3 секунды)
+const clicks3secModule = new ClicksModule('clicks-3s', 'Считать клики (за 3 секунды)')
+
+// Создаём экземпляр нового модуля
+const clicksAnalyticsModule = new AnalyticsClicksModule(
+    'clicks-analytics',
+    'Аналитика кликов (5 секунд)'
+)
+
+// Другие модули
 const shapeModule = new ShapeModule('shape', 'Создать фигуру')
 const backgroundModule = new BackgroundModule('background', 'Поменять цвет')
 const messageModule = new MessageModule('message', 'Вызвать сообщение')
 
-// 5) Добавляем их в наше меню
-menu.add(clicksModule)
+// Добавляем все в наше меню
+menu.add(clicks3secModule)
+menu.add(clicksAnalyticsModule)
 menu.add(shapeModule)
 menu.add(backgroundModule)
 menu.add(messageModule)
 
-// 6) Отслеживаем клик правой кнопкой мыши (событие contextmenu) на всём документе
+// Отключаем стандартное контекстное меню и показываем кастомное
 document.addEventListener('contextmenu', event => {
-    // ВАЖНО: Отключаем стандартное меню браузера
     event.preventDefault()
-    // Координаты клика
-    const { clientX, clientY } = event
-    // Открываем кастомное меню в нужной точке
-    menu.open(clientX, clientY)
+    menu.open(event.clientX, event.clientY)
 })

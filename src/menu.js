@@ -10,6 +10,7 @@ export class ContextMenu extends Menu {
 
         // При клике по ul с классом .menu
         this.el.addEventListener('click', event => {
+            console.log('this.el: ', this.el);
             // С data-атрибута (data-type="...") узнаём, какой модуль вызван
             const { type } = event.target.dataset
             const module = this.items.find(m => m.type === type)
